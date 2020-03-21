@@ -18,19 +18,24 @@
 
 
 
-      "ami_name": "golden_image {{timestamp}}"
+      "ami_name": "r1soft-server {{timestamp}}"
     }],
     "_comment1": "Comment here1",
     "provisioners": [
         {
             "type": "file",
-            "source": "./test.txt",
+            "source": "./r1soft.repo",
             "destination": "/tmp/"
         },
         {
             "type": "shell",
             "inline":[
-                "sudo yum update -y"
+                "sudo mv /tmp/r1soft.repo /etc/yum.repos.d",
+                "sudo yum update -y",
+                "sudo yum install r1soft-cdp-enterprice-server -y",
+                "sudo r1soft-setup --user admin --pass strong --http-port 80",
+                "sudo systemctl restart cdp-server",
+                "sudo systtmctl enable cdp-server"
                
             ]
         } 
